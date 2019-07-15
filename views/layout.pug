@@ -1,0 +1,54 @@
+doctype html
+html
+	head
+		title= title
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(name="language" content="English")
+		meta(name="title" content="Node Boilerplate")
+		meta(name="description" content="Healthy Food in Your Way, Kuala Lumpur Area")
+		meta(name="author" content="Ray Rinaldy")
+		meta(name="keywords" content="catering, malaysia, kuala lumpur")
+
+		//- Open Graph / Facebook
+		meta(property='og:type', content='website')
+		meta(property='og:url', content='https://rayrinaldy.com/')
+		meta(property='og:title', content='Node Boilerplate')
+		meta(property='og:description', content='Healthy Food in Your Way, Kuala Lumpur Area')
+		meta(property='og:image', content='/images/banner.jpg')
+		
+		//- Twitter
+		meta(property='twitter:card', content='summary_large_image')
+		meta(property='twitter:url', content='https://rayrinaldy.com/')
+		meta(property='twitter:title', content='Node Boilerplate')
+		meta(property='twitter:description', content='Healthy Food in Your Way, Kuala Lumpur Area')
+		meta(property='twitter:image', content='/images/banner.jpg')
+
+		link(href='https://fonts.googleapis.com/css?family=Montserrat:200,400,500,600,700&display=swap', rel='stylesheet')
+		//- link(href='https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap', rel='stylesheet')
+
+		link(rel='stylesheet', href='/css/bootstrap.css')
+		link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.1/css/all.css')
+		link(href='/css/dataTables.bootstrap4.min.css', rel='stylesheet')
+		link(rel='stylesheet', href='/css/style.css')
+
+		block css
+	body
+		include navbar
+		
+		block navbar
+		
+		block content
+
+		include footer
+
+		script(src='https://code.jquery.com/jquery.js')
+		script(src='/js/popper.min.js')
+		script(src='/js/bootstrap.min.js')
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js")
+		//- script(src='/js/jquery.dataTables.min.js')
+		//- script(src='/js/dataTables.bootstrap4.min.js')
+		//- script(src="/js/modernizr.js")
+		
+		script(src='/js/script.js')
+
+		block script

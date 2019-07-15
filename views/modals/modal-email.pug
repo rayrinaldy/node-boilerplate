@@ -1,0 +1,23 @@
+#modalEmail.modal.fade(tabindex='-1', role='dialog', aria-labelledby='EmailModal', aria-hidden='true')
+	.modal-dialog(role='document')
+		.modal-content
+			.modal-header
+				h5#EmailModal.modal-title Send email to <span class="user--name"></span>
+				button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') ×
+
+			.modal-body
+				form(action='/admin/mail', method='post')
+					input(type='hidden', name='_csrf', value=_csrf)
+					.form-group
+						label(for='to') To:
+						input.form-control(type='email', name='mail_to')
+					.form-group
+						label(for='subject') Subject:
+						input.form-control(type='text', name='mail_subject')
+					.form-group
+						label(for='body') Body:
+						textarea.trumbowyg.form-control(cols='5', rows='5', name='mail_body')
+			
+			.modal-footer
+				button.btn.btn-primary(type='submit') Send

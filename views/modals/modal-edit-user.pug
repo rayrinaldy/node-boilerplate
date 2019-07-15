@@ -1,0 +1,51 @@
+#modalEditUser.modal.fade(tabindex='-1', role='dialog', aria-labelledby='EditUser', aria-hidden='true')
+	.modal-dialog(role='document')
+		.modal-content
+			.modal-header
+				h5#EditUser.modal-title Edit User
+				button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') ×
+			.modal-body
+				.alert.alert-danger.alert-failed-submission.d-none(role="alert")
+
+				form.form-edit-user(action="" method='post')
+					input(type='hidden', name='_csrf', value=_csrf)
+					.form-group
+						label(for='inputUsername') Username
+						input#inputUsername.form-control(type='text', name='username', placeholder='Username', autofocus, minlength="3")
+						.invalid-feedback 
+
+					//- .form-group
+						label(for='inputPassword') Password
+						input#inputPassword.form-control(type='password', name="password" placeholder='Password', minlength="6")
+						.invalid-feedback
+
+					.form-group
+						label(for='inputFName') First Name
+						input#inputFName.form-control(type='text', name="firstName" placeholder='First Name')
+						.invalid-feedback
+
+					.form-group
+						label(for='inputLName') Last Name
+						input#inputLName.form-control(type='text', name="lastName" placeholder='Last Name')
+						.invalid-feedback
+
+					.form-group
+						label(for='inputPhone') Phone
+						input#inputPhone.form-control(type='phone', name="phone" placeholder='Phone Number')
+						.invalid-feedback
+
+					.form-group
+						label(for='inputEmail') Email
+						input#inputEmail.form-control(type='email', name="email" placeholder='Email')
+						.invalid-feedback
+
+					.form-group
+						label(for='selectRole') Access Role
+						select#selectRole.form-control(name="userGroup")
+							option(value="admin") Administrator
+							option(value="staff") Staff
+							option(value="driver") Driver
+							option(value="user") User
+
+					button.btn.btn-primary.btn-submit-data.float-right(type='submit') Submit

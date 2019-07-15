@@ -1,0 +1,16 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    .container-fluid
+        a.navbar-brand(href='#') My Laundry
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+
+        #navbarResponsive.collapse.navbar-collapse
+            ul.nav.navbar-nav.ml-auto
+                if(user)
+                    //- li.nav-item.active.mr-3
+                        .nav-link You are currently logged in as 
+                    li.nav-item.dropdown
+                        a#navbardrop.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
+                            | Hi, #{user.username}
+                        .dropdown-menu
+                            a.dropdown-item(href='/api/users/logout') Logout

@@ -1,0 +1,381 @@
+extends ../layout
+
+block variables
+	- var pageID = 'users';
+
+block content
+	ul.nav.nav-pills.justify-content-center
+		li.nav-item
+			a.nav-link.active(data-toggle='pill', href='#home') All Users
+		li.nav-item
+			a.nav-link(data-toggle='pill', href='#user') Registered User
+		li.nav-item
+			a.nav-link(data-toggle='pill', href='#driver') Registered Driver
+		li.nav-item
+			a.nav-link(data-toggle='pill', href='#staff') Registered Staff
+
+	.tab-content
+		#home.tab-pane.active
+			.row
+				.col-md-12.mt-4.mb-4
+					.card.shadow.mb-4
+						.card-header.py-3.d-sm-flex.align-items-center.justify-content-between
+							h6.m-0.font-weight-bold.text-primary.d-inline All Users
+							button.btn.btn-primary.d-inline.float-right(type='button', data-toggle='modal', data-target="#modalAddUser") Add User
+
+						.card-body
+							if(users.length > 0)
+								.table-responsive
+									table#table--user.table.table-bordered(width='100%', cellspacing='0')
+										thead
+											th Username
+											th Name
+											th Email
+											th Phone Number
+											th Address
+											th Group
+											th Action
+										tbody
+											each val, i in users
+												tr  
+													td!= val.username
+													td.td--name
+														if val.name.firstName === 'undefined' && val.name.lastName === 'undefined'
+															| Please edit your name
+														else 
+															!= val.name.firstName + ' ' + val.name.lastName
+													td.td--email!= val.email
+													td!= val.phone
+													if val.address.length > 0
+														each address in val.address
+															td(style="max-width: 500px;")= address.unitNumber + ', ' + address.fullAddress
+													else
+														td No Address Registered
+													td!= val.userGroup
+													td
+														//- button.btn.btn-outline-primary.btn-block.btn-sm.btn_edit-user.mr-2(
+															type='button', 
+															data-id!= val._id, 
+															data-username= val.username, 
+															data-firstname= val.name.firstName, 
+															data-lastname= val.name.lastName, 
+															data-email= val.email, 
+															data-phone= val.phone, 
+															data-role= val.userGroup, 
+															data-toggle='modal', 
+															data-target='#modalEditUser'
+														//- ) Edit User
+
+														button.btn.btn-secondary.btn-block.btn-sm.btn-add-address.mr-2(type='button', data-toggle='modal', data-target='#modalAddAddress', data-id= val._id) Add Address
+														
+														//- if (val.userGroup === 'user')
+														//- 	button.btn.btn-outline-primary.btn-sm.btn-add-shipment.mr-2(type='button', data-toggle='modal', data-target='#modalAddShipment', data-id= val._id) Add Shipment
+											
+														if !(user.username === val.username)
+															button.btn.btn-danger.btn-sm.btn-delete.btn-block(type='button', data-toggle='modal', data-target='#modalDelete', data-url= '/api/users/delete/' + val._id) Delete
+							else
+								h4
+									| Sorry, no user found
+		#user.tab-pane.fade
+			.row
+				.col-md-12.mt-4.mb-4
+					.card.shadow.mb-4
+						.card-header.py-3.d-sm-flex.align-items-center.justify-content-between
+							h6.m-0.font-weight-bold.text-primary.d-inline Users
+							button.btn.btn-primary.d-inline.float-right(type='button', data-toggle='modal', data-target="#modalAddUser") Create New User
+
+						.card-body
+							if(onlyUser.length > 0)
+								.table-responsive
+									table#table--user.table.table-bordered(width='100%', cellspacing='0')
+										thead
+											th Username
+											th Name
+											th Email
+											th Phone Number
+											th Address
+											th Group
+											th Action
+										tbody
+											each val, i in onlyUser
+												tr  
+													td!= val.username
+													td.td--name
+														if val.name.firstName === 'undefined' && val.name.lastName === 'undefined'
+															| Please edit your name
+														else 
+															!= val.name.firstName + ' ' + val.name.lastName
+													td.td--email!= val.email
+													td!= val.phone
+													if val.address.length > 0
+														each address in val.address
+															td(style="max-width: 500px;")= address.unitNumber + ', ' + address.fullAddress
+													else
+														td No Address Registered
+													td!= val.userGroup
+													td
+														//- button.btn.btn-outline-primary.btn-block.btn-sm.btn_edit-user.mr-2(
+															type='button', 
+															data-id!= val._id, 
+															data-username= val.username, 
+															data-firstname= val.name.firstName, 
+															data-lastname= val.name.lastName, 
+															data-email= val.email, 
+															data-phone= val.phone, 
+															data-role= val.userGroup, 
+															data-toggle='modal', 
+															data-target='#modalEditUser'
+														//- ) Edit User
+
+														button.btn.btn-secondary.btn-block.btn-sm.btn-add-address.mr-2(type='button', data-toggle='modal', data-target='#modalAddAddress', data-id= val._id) Add Address
+														
+														//- if (val.userGroup === 'user')
+														//- 	button.btn.btn-outline-primary.btn-sm.btn-add-shipment.mr-2(type='button', data-toggle='modal', data-target='#modalAddShipment', data-id= val._id) Add Shipment
+											
+														if !(user.username === val.username)
+															button.btn.btn-danger.btn-sm.btn-delete.btn-block(type='button', data-toggle='modal', data-target='#modalDelete', data-url= '/api/users/delete/' + val._id) Delete
+							else
+								h4
+									| Sorry, no user found
+		#driver.tab-pane.fade
+			.row
+				.col-md-12.mt-4.mb-4
+					.card.shadow.mb-4
+						.card-header.py-3.d-sm-flex.align-items-center.justify-content-between
+							h6.m-0.font-weight-bold.text-primary.d-inline Drivers
+							button.btn.btn-primary.d-inline.float-right(type='button', data-toggle='modal', data-target="#modalAddUser") Create New Driver
+
+						.card-body
+							if(onlyDriver.length > 0)
+								.table-responsive
+									table#table--user.table.table-bordered(width='100%', cellspacing='0')
+										thead
+											th Username
+											th Name
+											th Email
+											th Phone Number
+											th Group
+											th Action
+										tbody
+											each val, i in onlyDriver
+												tr  
+													td!= val.username
+													td.td--name
+														if val.name.firstName === 'undefined' && val.name.lastName === 'undefined'
+															| Please edit your name
+														else 
+															!= val.name.firstName + ' ' + val.name.lastName
+													td.td--email!= val.email
+													td!= val.phone
+													td!= val.userGroup
+													td
+														//- button.btn.btn-outline-primary.btn-block.btn-sm.btn_edit-user.mr-2(
+															type='button', 
+															data-id!= val._id, 
+															data-username= val.username, 
+															data-firstname= val.name.firstName, 
+															data-lastname= val.name.lastName, 
+															data-email= val.email, 
+															data-phone= val.phone, 
+															data-role= val.userGroup, 
+															data-toggle='modal', 
+															data-target='#modalEditUser'
+														//- ) Edit User
+
+														button.btn.btn-secondary.btn-block.btn-sm.btn-add-address.mr-2(type='button', data-toggle='modal', data-target='#modalAddAddress', data-id= val._id) Add Address
+														
+														//- if (val.userGroup === 'user')
+														//- 	button.btn.btn-outline-primary.btn-sm.btn-add-shipment.mr-2(type='button', data-toggle='modal', data-target='#modalAddShipment', data-id= val._id) Add Shipment
+											
+														if !(user.username === val.username)
+															button.btn.btn-danger.btn-sm.btn-delete.btn-block(type='button', data-toggle='modal', data-target='#modalDelete', data-url= '/api/users/delete/' + val._id) Delete
+							else
+								h4
+									| Sorry, no driver found
+		#staff.tab-pane.fade
+			.row
+				.col-md-12.mt-4.mb-4
+					.card.shadow.mb-4
+						.card-header.py-3.d-sm-flex.align-items-center.justify-content-between
+							h6.m-0.font-weight-bold.text-primary.d-inline Staffs
+							button.btn.btn-primary.d-inline.float-right(type='button', data-toggle='modal', data-target="#modalAddUser") Create New Staff
+
+						.card-body
+							if(onlyStaff.length > 0)
+								.table-responsive
+									table#table--user.table.table-bordered(width='100%', cellspacing='0')
+										thead
+											th Username
+											th Name
+											th Email
+											th Phone Number
+											th Group
+											th Action
+										tbody
+											each val, i in onlyStaff
+												tr  
+													td!= val.username
+													td.td--name
+														if val.name.firstName === 'undefined' && val.name.lastName === 'undefined'
+															| Please edit your name
+														else 
+															!= val.name.firstName + ' ' + val.name.lastName
+													td.td--email!= val.email
+													td!= val.phone
+													td!= val.userGroup
+													td
+														//- button.btn.btn-outline-primary.btn-block.btn-sm.btn_edit-user.mr-2(
+															type='button', 
+															data-id!= val._id, 
+															data-username= val.username, 
+															data-firstname= val.name.firstName, 
+															data-lastname= val.name.lastName, 
+															data-email= val.email, 
+															data-phone= val.phone, 
+															data-role= val.userGroup, 
+															data-toggle='modal', 
+															data-target='#modalEditUser'
+														//- ) Edit User
+
+														button.btn.btn-secondary.btn-block.btn-sm.btn-add-address.mr-2(type='button', data-toggle='modal', data-target='#modalAddAddress', data-id= val._id) Add Address
+														
+														//- if (val.userGroup === 'user')
+														//- 	button.btn.btn-outline-primary.btn-sm.btn-add-shipment.mr-2(type='button', data-toggle='modal', data-target='#modalAddShipment', data-id= val._id) Add Shipment
+											
+														if !(user.username === val.username)
+															button.btn.btn-danger.btn-sm.btn-delete.btn-block(type='button', data-toggle='modal', data-target='#modalDelete', data-url= '/api/users/delete/' + val._id) Delete
+							else
+								h4
+									| Sorry, no staff found
+
+	include ../../modals/modal-email
+	include ../../modals/modal-add-user
+	include ../../modals/modal-edit-user
+	include ../../modals/modal-add-address
+
+block script
+	script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEqFmSQuDANwfqZs4Pk1d635FvQgKAPKg&libraries=places")
+	script.
+		$(function(){
+			var formError = !{JSON.stringify(formError)}
+
+			$('#table--user').DataTable();
+
+			_.each(formError, function(err, i) {
+				$('input[name="' + err.param + '"]').closest('.form-group').find('.invalid-feedback').addClass('d-block').html(err.msg);
+			})
+
+			//- $('input[name="shipping_schedule"]').daterangepicker({
+			//- 	singleDatePicker: true,
+			//- 	showDropdowns: true
+			//- });
+		})
+	
+	script.
+		function initMap() {
+			var geocoder = new google.maps.Geocoder;
+			var infowindow = new google.maps.InfoWindow;
+			var myLatLng = {lat:3.0632851 , lng:101.69508780000001 };
+			var locationInput = document.getElementById('inputAddress');
+
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 13,
+				center: myLatLng,
+				disableDefaultUI: true,
+				zoomControl: true,
+			});
+
+			var autocomplete = new google.maps.places.Autocomplete(locationInput, { 
+				types: [],
+				componentRestrictions: { country: 'my' }
+			});
+
+			autocomplete.bindTo('bounds', map);
+
+			var marker = new google.maps.Marker({
+				position: myLatLng,
+				map: map,
+				title: 'Hello World!',
+				anchorPoint: new google.maps.Point(0, -29),
+				draggable: true
+			});
+
+			autocomplete.addListener('place_changed', function() {
+				//- infowindow.close();
+				marker.setVisible(false);
+				var place = autocomplete.getPlace();
+					if (!place.geometry) {
+					window.alert("No details available for input: '" + place.name + "'");
+					return;
+				}
+				
+				var lat = place.geometry.location.lat();
+				var lng = place.geometry.location.lng();
+
+				$('input[name="latitude"]').val(lat);
+				$('input[name="longitude"]').val(lng);
+
+				// If the place has a geometry, then present it on a map.
+				if (place.geometry.viewport) {
+					map.fitBounds(place.geometry.viewport);
+				} else {
+					map.setCenter(place.geometry.location);
+					map.setZoom(17);  // Why 17? Because it looks good.
+				}
+
+				marker.setPosition(place.geometry.location);
+				marker.setVisible(true);
+
+				var address = '';
+
+				if (place.address_components) {
+					address = [
+						(place.address_components[0] && place.address_components[0].short_name || ''),
+						(place.address_components[1] && place.address_components[1].short_name || ''),
+						(place.address_components[2] && place.address_components[2].short_name || '')
+					].join(' ');
+				}
+
+				//- infowindowContent.children['place-icon'].src = place.icon;
+				//- infowindowContent.children['place-name'].textContent = place.name;
+				//- infowindowContent.children['place-address'].textContent = address;
+				//- infowindow.open(map, marker);
+			});
+
+			addMarker(marker, myLatLng, map, geocoder);
+		}
+
+		function geocodeLatLng(geocoder, map, lat, lang) {
+			var latlng = {lat: lat, lng: lang};
+			geocoder.geocode({'location': latlng}, function(results, status) {
+				if (status === 'OK') {
+					if (results[0]) {
+						
+						console.log(results[0].formatted_address);
+
+						google.maps.setMap(null);
+
+						addMarker(latlng, map, geocoder);
+
+					} else {
+						window.alert('No results found');
+					}
+				} else {
+					window.alert('Geocoder failed due to: ' + status);
+				}
+			});
+		}
+
+		function addMarker(marker, location, map, geocoder) {
+			marker.addListener('dragend', function(e){
+				var lat = e.latLng.lat();
+				var lng = e.latLng.lng()
+
+				$('input[name="latitude"]').val(lat);
+				$('input[name="longitude"]').val(lng);
+				
+				geocodeLatLng(geocoder, map, lat, lng);
+			})
+		}
+
+		initMap();

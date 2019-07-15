@@ -1,0 +1,171 @@
+extends layout
+
+block variables
+	- var pageID = '';
+
+block content
+	.d-sm-flex.align-items-center.justify-content-between.mb-4
+		h1.h3.mb-0.text-gray-800 Dashboard
+		a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm(href='#')
+			i.fas.fa-download.fa-sm.text-white-50
+			|  Generate Report
+
+	.row
+		.col-md-6.col-lg.mb-4
+			.card.border-left-primary.shadow.h-100.py-2
+				.card-body
+					.row.no-gutters.align-items-center
+						.col.mr-2
+							.text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Registered User
+							-var totalUser = users.filter(function(s) { return s.userGroup === 'user'; }).length;
+							.h2.mb-0.font-weight-bold.text-gray-800!= totalUser
+						.col.mr-2
+							.text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Registered Staff
+							-var totalStaff = users.filter(function(s) { return s.userGroup === 'staff'; }).length;
+							.h2.mb-0.font-weight-bold.text-gray-800= totalStaff
+						.col.mr-2
+							.text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Registered Driver
+							-var totalDriver = users.filter(function(s) { return s.userGroup === 'driver'; }).length;
+							.h2.mb-0.font-weight-bold.text-gray-800= totalDriver
+						//- .col-auto
+							i.fas.fa-users.fa-2x.text-gray-300
+		.col-md-6.col-lg.mb-4
+			.card.border-left-primary.shadow.h-100.py-2
+				.card-body
+					.row.no-gutters.align-items-center
+						.col.mr-2
+							//- - var activeMachine = machines.filter(function(s) { return s.state; }).length;
+							.text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Total Order
+							.h2.mb-0.font-weight-bold.text-gray-800!= jobs.length
+						.col.mr-2
+							.text-xs.font-weight-bold.text-primary.text-uppercase.mb-1 Order Finished
+							- var finishedJobs = jobs.filter(function(s) { return s.jobFinished; }).length;
+							.h2.mb-0.font-weight-bold.text-gray-800= finishedJobs
+						//- .col-auto
+							i.fas.fa-dollar-sign.fa-2x.text-gray-300
+
+	.row
+		.col-md-12
+			.card.shadow.mb-4
+				.card-header.py-3
+					h6.m-0.font-weight-bold.text-primary Jobs Overview
+				.card-body
+					if(jobs.length > 0)
+						.table-responsive
+							table#table--jobs.table.table-bordered(width='100%', cellspacing='0')
+								thead
+									th Order Date
+									th User
+									th Pick up time
+									th Delivery time
+									th Assigned Staff
+									th Assigned Driver
+									//- th Promo Used
+									th Job Status
+									//- th Action
+								tbody
+									each val in jobs
+										tr
+											td(style="max-width: 150px;")= val.created_at
+											td= val.user.name.firstName + ' ' + val.user.name.lastName
+											td= val.pickupTime
+											td= val.deliveryTime
+											td
+												if (val.staff != undefined)
+													p= val.staff.account.name.firstName + ' ' + val.staff.account.name.lastName
+													a(href="mailto:" + val.staff.account.email) 
+													= val.staff.account.email
+													br
+													a(href="tel:" + val.staff.account.phone)
+														= val.staff.account.phone
+												else 
+													p N/A
+											td
+												if (val.driver != undefined)
+													p= val.driver.account.name.firstName + ' ' + val.driver.account.name.lastName
+													a(href="mailto:" + val.driver.account.email) 
+													= val.driver.account.email
+													br
+													a(href="tel:" + val.driver.account.phone)
+														= val.driver.account.phone
+												else 
+													p N/A
+											//- td= val.promoCode
+											td= val.jobFinished ? 'Finished' : 'Not Finished'
+											
+											//- td
+												button.btn.btn-primary.btn-sm.btn-block.btn-assign-job(type='button', data-toggle='modal', data-target='#modalAssignJob', data-url= '/api/jobs/update/' + val.id) Assign Job
+												//- button.btn.btn-danger.btn-delete.btn-sm.btn-block(type='button', data-toggle='modal', data-target='#modalDelete', data-url= '/api/jobs/delete/' + val.id) Delete
+									
+					else
+						h4
+							| Sorry, no jobs found
+		.col-md-12
+			.card.shadow.mb-4
+				.card-header.py-3
+					h6.m-0.font-weight-bold.text-primary Users Overview
+				.card-body
+					if(users.length > 0)
+						.table-responsive
+							table#table--user.table.table-bordered(width='100%', cellspacing='0')
+								thead
+									//- th Username
+									th Name
+									th Email
+									th Phone Number
+									th Group
+									//- th Action
+								tbody
+									each val in users
+										tr  
+											//- td!= val.username
+											td.td--name
+												if val.name.firstName === 'undefined' && val.name.lastName === 'undefined'
+													| Please edit your name
+												else 
+													!= val.name.firstName + ' ' + val.name.lastName
+											td.td--email!= val.email
+											td!= val.phone
+											td!= val.userGroup
+											
+											//- if val._id == user._id
+											//- 	td.text-center
+											//- 		a.btn.btn-success(href!= "/admin/edit/" + val._id, title="Edit User")
+											//- 			i.fa.fa-pencil
+											//- 			| Edit
+											//- else
+											//- td
+												//- button.btn.btn-primary.btn-send_email.mr-2(type='button', data-toggle='modal', data-target='#modalEmail' data-name!= val.name.firstName + ' ' + val.name.lastName data-email!= val.email) Send Email
+												button.btn.btn-secondary.btn-block.btn_edit-user(
+													type='button', 
+													data-id!= val._id, 
+													data-username= val.username, 
+													data-firstname= val.name.firstName, 
+													data-lastname= val.name.lastName, 
+													data-email= val.email, 
+													data-phone= val.phone, 
+													data-role= val.userGroup, 
+													data-toggle='modal', 
+													data-target='#modalEditUser'
+												) Edit User
+									
+					else
+						h4
+							| Sorry, no user found
+		
+	//- include ../modals/modal-email
+	//- include ../modals/modal-edit-user
+	//- include ../modals/modal-assign-job
+	
+block script
+	script.
+		//- var users = !JSON.stringify(users);
+
+		$(function(){
+			$('#table--user').DataTable({
+				"pageLength": 5
+			});
+			$('#table--jobs').DataTable({
+				"pageLength": 5
+			});
+		})

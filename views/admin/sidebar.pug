@@ -1,0 +1,20 @@
+- var mainUrl = '/admin/'
+- var navigation = [{'url': '','title': 'Dashboard', 'icon': 'fa-tachometer-alt'}, {'url':'users','title': 'Users Control', 'icon': 'fa-user'},{'url':'jobs','title': 'All Jobs', 'icon': 'fa-user'},{'url':'promo','title': 'Promo Management', 'icon': 'fa-user'}];
+
+ul#accordionSidebar.navbar-nav.bg-gradient-primary.sidebar.sidebar-dark.accordion
+	a.sidebar-brand.d-flex.align-items-center.justify-content-center(href='/admin')
+		.sidebar-brand-icon
+			i.fas.fa-box
+		.sidebar-brand-text.mx-3
+			| Laundry
+	hr.sidebar-divider.my-0
+
+	each url in navigation
+		li.nav-item(class= url.url === pageID ? 'active' : "")
+			a.nav-link(href!= mainUrl + url.url)
+				i.fas.fa-fw(class= url.icon)
+				span!= url.title
+
+	hr.sidebar-divider.d-none.d-md-block
+	.text-center.d-none.d-md-inline
+		button#sidebarToggle.rounded-circle.border-0
