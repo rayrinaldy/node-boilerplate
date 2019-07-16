@@ -8,7 +8,6 @@ const { check, validationResult } = require('express-validator');
 const mailer = require('@sendgrid/mail');
 const config = require('../../../config/config');
 const Account = require('../../../models/account');
-const Address = require('../../../models/address');
 
 mailer.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -41,7 +40,7 @@ const controller = {
 
         if(!errors.isEmpty()) {
             res.render('register', {
-                title: 'Register - Laundry System',
+                title: 'Register - Ray Website',
                 user: req.user,
                 error: req.flash('error'),
                 formError: errors.array(),
@@ -153,92 +152,6 @@ const controller = {
                 return next(err);
 
             res.status(200).send('User details deleted successfully!');
-        });
-    },
-    address: (req, res, next) => {
-        try {
-            Account
-                .findOne({ _id: req.params.id })
-                .populate({
-                    path: 'address',
-                    select: '-created_at -updated_at'
-                })
-                .exec((err, data) => {
-                    if(err) return next(err);
-                    res.status(200).send(data);
-                })
-        } catch (err) {
-            return next(err);
-        }
-    },
-    allAddress: (req, res, next) => {
-        try {
-            Address
-                .find()
-                .populate('user', 'username')
-                .exec((err, data) => {
-                    if(err) return next(err);
-                    res.status(200).send(data);
-                })
-        } catch (err) {
-            return next(err);
-        }
-    },
-    addAddress: (req, res, next) => {
-        const { buildingType, fullAddress, extraDetails, unitNumber, hotelName, latitude, longitude } = req.body;
-
-        Account.findById(req.user.id, (err, user) => {
-            if (err) return next(err);
-
-            let address = new Address({
-                buildingType,
-                fullAddress,
-                extraDetails,
-                unitNumber,
-                hotelName,
-                latitude, 
-                longitude,
-                user: req.user._id
-            })
-    
-            Address.create(address, (err, data) => {
-                if(err) return next(err);
-                
-                user.address.push(address);
-
-                user.save((err) => {
-                    if(err) return next(err);
-                    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-                        res.status(200).send('Address saved successfully.');
-                    } else {
-                        res.redirect('/preference')
-                    }
-                })
-            })
-        })
-    },
-    updateAddress: (req, res, next) => {
-        Address.findOneAndUpdate(req.params.id, {
-            $set: {
-                buildingType: req.body.buildingType,
-                fullAddress : req.body.fullAddress,
-                extraDetails: req.body.extraDetails,
-                unitNumber  : req.body.unitNumber,
-                hotelName   : req.body.hotelName,
-                latitude    : req.body.latitude,
-                longitude   : req.body.longitude,
-            }
-        }, (err, data) => {
-            if (err) return next(err);
-            res.status(200).send('Address updated.');
-        });
-    },
-    deleteAddress: (req, res, next) => {
-         Address.findOneAndRemove({_id: req.params.id}, (err) => {
-            if (err)
-                return next(err);
-
-            res.status(200).send('Deleted successfully!');
         });
     },
     logout: (req, res, next) => {

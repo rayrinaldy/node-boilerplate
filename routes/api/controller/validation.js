@@ -1,6 +1,5 @@
 const { check } = require('express-validator');
 const Account = require('../../../models/account');
-const Promo = require('../../../models/promo');
 
 exports.validate = (method) => {
     switch(method) {
@@ -31,14 +30,6 @@ exports.validate = (method) => {
             return [
                 check('username').not().isEmpty().isLength({ min: 3 }).withMessage('Min username length is 3'),
                 check('password').not().isEmpty().isLength({ min: 6 }).withMessage('Min password length is 6'),
-            ]
-        }
-
-        case 'order': {
-            return [
-                check('pickupTime').not().isEmpty().withMessage('Please input your preferable laundry pickup time'),
-                check('deliveryTime').not().isEmpty().withMessage('Please input your preferable laundry delivery time'),
-                
             ]
         }
     }

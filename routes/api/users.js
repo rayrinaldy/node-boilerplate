@@ -18,11 +18,4 @@ router.post('/update/:id', require('permission')('admin'), userController.editUs
 router.post('/update-password/:id', require('permission')(), userController.editPassword)
 router.delete('/delete/:id', require('permission')('admin'), userController.deleteUser)
 
-// Users to Modify Address
-router.get('/address', userController.allAddress);
-router.get('/address/:id', require('permission')(['admin', 'user']), userController.address);
-router.post('/address', require('permission')(['admin', 'user']), userController.addAddress);
-router.post('/address/update/:id', require('permission')(['admin', 'user']), userController.updateAddress);
-router.delete('/address/delete/:id', require('permission')(['admin', 'user']), userController.deleteAddress);
-
 module.exports = router;
