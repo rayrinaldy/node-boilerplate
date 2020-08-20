@@ -16,7 +16,7 @@
     "axios": "0.18.1",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "bcrypt": "^3.0.5",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.3",
