@@ -33,7 +33,7 @@
     "grunt-express-server": "^0.5.4",
     "grunt-sass": "^2.1.0",
     "helmet": "^3.16.0",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "http-auth": "^3.2.3",
     "imap": "^0.8.19",
     "jsonwebtoken": "^8.5.1",
